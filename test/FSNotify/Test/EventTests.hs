@@ -29,7 +29,7 @@ eventTests :: (
   MonadUnliftIO m, MonadThrow m
   ) => ThreadingMode -> SpecFree context m ()
 eventTests threadingMode = describe "Tests" $ parallelWithoutDirectory $ do
-  let pollOptions = if isBSD then [True] else [False, True]
+  let pollOptions = if haveNativeWatcher then [False, True] else [True]
 
   forM_ pollOptions $ \poll -> describe (if poll then "Polling" else "Native") $ parallelWithoutDirectory $ do
     let timeInterval = if poll then 2*10^(6 :: Int) else 5*10^(5 :: Int)
